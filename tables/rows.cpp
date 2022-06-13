@@ -16,17 +16,15 @@
 #include "util.h"
 
 extern "C" {
-    uint num_rows(Table* t) {
-        return t->nrow();
-    }
+uint num_rows(Table *t) { return t->nrow(); }
 
-    void add_rows(Table* t, uint number) {
-        t->addRow(number, true); // always initialize the new rows
-    }
-
-    void remove_rows(Table* t, uint* row_numbers, size_t length) {
-        auto my_row_numbers = input_vector(row_numbers, length);
-        t->removeRow(*my_row_numbers);
-    }
+void add_rows(Table *t, uint number) {
+  t->addRow(number, true); // always initialize the new rows
 }
 
+void remove_rows(Table *t, uint *row_numbers, size_t length) {
+  // New interface is to pass in const RowNumbers&, which can come from vectors
+  std::vector<rownr_t> rows(row_numbers, row_numbers + length);
+  t->removeRow(rows);
+}
+}

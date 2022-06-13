@@ -3,3 +3,5 @@
 *.log
 tmp/
 *.o
+.ccls-cache/
+build/

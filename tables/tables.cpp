@@ -21,43 +21,45 @@
 // * keywords associated with the table
 // * keywords associated with a column
 //
-// All columns must have the same number of rows but they may either store scalars or arrays in
-// each row. We need functions to read and write to both types of columns as well as writing to one
-// cell (a single row of a single column) at a time.
+// All columns must have the same number of rows but they may either store
+// scalars or arrays in each row. We need functions to read and write to both
+// types of columns as well as writing to one cell (a single row of a single
+// column) at a time.
 //
-// Similarly we must support reading and writing to keywords associated with the table and with
-// each of the individual columns. We may store either scalars or arrays as keywords.
+// Similarly we must support reading and writing to keywords associated with the
+// table and with each of the individual columns. We may store either scalars or
+// arrays as keywords.
 //
-// Finally we must support a host of data types: bool, int, float, double, complex<float>, and
-// strings among others. C does not support function overloading so we will need a separate method
-// for each of these data types. Strings are special little snow flakes and will require some extra
-// attention.
+// Finally we must support a host of data types: bool, int, float, double,
+// complex<float>, and strings among others. C does not support function
+// overloading so we will need a separate method for each of these data types.
+// Strings are special little snow flakes and will require some extra attention.
 //
-// As you can see a huge number of methods are required. We will make liberal use of C++ templating
-// to make each of these method definitions as simple as possible. On the Julia side we will need
-// to make use of meta-programming and multiple-dispatch to ease the pain of defining all the
-// corresponding functions and then selecting which one to call.
+// As you can see a huge number of methods are required. We will make liberal
+// use of C++ templating to make each of these method definitions as simple as
+// possible. On the Julia side we will need to make use of meta-programming and
+// multiple-dispatch to ease the pain of defining all the corresponding
+// functions and then selecting which one to call.
 //
-// Note that I tried to keep this file as organized as possible, but there are simply so many
-// definitions that it has inevitably become scattered. Apologies!
+// Note that I tried to keep this file as organized as possible, but there are
+// simply so many definitions that it has inevitably become scattered.
+// Apologies!
 
-// Now define methods for interacting with casacore::Table. Again strings will usually need to be
-// special cased.
+// Now define methods for interacting with casacore::Table. Again strings will
+// usually need to be special cased.
 
-// All the functions defined within `extern "C" { ... }` may be called directly from Julia.
+// All the functions defined within `extern "C" { ... }` may be called directly
+// from Julia.
 
 extern "C" {
-    Table* new_table_open(char* path, int mode) {
-        return new Table(path, Table::TableOption(mode));
-    }
-    Table* new_table_create(char* path) {
-        SetupNewTable maker(path, TableDesc(), Table::NewNoReplace);
-        return new Table(maker, 0); // 0 rows by default
-    }
-    void delete_table(Table* t) {delete t;}
-
-    char* table_name(Table* t) {
-        return output_string(t->tableName());
-    }
+Table *new_table_open(char *path, int mode) {
+  return new Table(path, Table::TableOption(mode));
 }
+Table *new_table_create(char *path) {
+  SetupNewTable maker(path, TableDesc(), Table::NewNoReplace);
+  return new Table(maker, 0); // 0 rows by default
+}
+void delete_table(Table *t) { delete t; }
 
+char *table_name(Table *t) { return output_string(t->tableName()); }
+}

@@ -13,16 +13,15 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <casacore/tables/Tables.h>
 #include <casacore/ms/MeasurementSets.h>
+#include <casacore/tables/Tables.h>
 using namespace casacore;
 
 extern "C" {
-    Table* new_measurement_set_create(char* path) {
-        SetupNewTable maker(path, MS::requiredTableDesc(), Table::NewNoReplace);
-        MeasurementSet* ms = new MeasurementSet(maker);
-        ms->createDefaultSubtables(Table::New);
-        return ms;
-    }
+Table *new_measurement_set_create(char *path) {
+  SetupNewTable maker(path, MS::requiredTableDesc(), Table::NewNoReplace);
+  MeasurementSet *ms = new MeasurementSet(maker);
+  ms->createDefaultSubtables(Table::New);
+  return ms;
 }
-
+}
