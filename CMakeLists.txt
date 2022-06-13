@@ -3,6 +3,9 @@ project(casacorewrapper)
 cmake_minimum_required(VERSION 3.10)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
+# We need at least C++ 11
+set (CMAKE_CXX_STANDARD 11)
+
 # Find casacore
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 find_package(Casacore REQUIRED)
