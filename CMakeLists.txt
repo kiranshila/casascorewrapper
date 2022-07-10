@@ -27,7 +27,8 @@ add_subdirectory(rc)
 add_library(casacorewrapper SHARED
   $<TARGET_OBJECTS:measures>
   $<TARGET_OBJECTS:tables>
-  $<TARGET_OBJECTS:measurement_sets>)
+  $<TARGET_OBJECTS:measurement_sets>
+  $<TARGET_OBJECTS:rc>)
 target_link_libraries(casacorewrapper casa_casa casa_tables casa_ms casa_measures)
 
 # Install
