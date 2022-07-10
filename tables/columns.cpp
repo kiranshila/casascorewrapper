@@ -91,6 +91,9 @@ void add_scalar_column_double(Table *t, char *name) {
 void add_scalar_column_complex(Table *t, char *name) {
   addScalarColumn<Complex>(t, name);
 }
+void add_scalar_column_double_complex(Table *t, char *name) {
+  addScalarColumn<DComplex>(t, name);
+}
 void add_scalar_column_string(Table *t, char *name) {
   addScalarColumn<String>(t, name);
 }
@@ -109,6 +112,9 @@ void add_array_column_double(Table *t, char *name, int *dim, int ndim) {
 }
 void add_array_column_complex(Table *t, char *name, int *dim, int ndim) {
   addArrayColumn<Complex>(t, name, dim, ndim);
+}
+void add_array_column_double_complex(Table *t, char *name, int *dim, int ndim) {
+  addArrayColumn<DComplex>(t, name, dim, ndim);
 }
 void add_array_column_string(Table *t, char *name, int *dim, int ndim) {
   addArrayColumn<String>(t, name, dim, ndim);
