@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "util.h"
+#include "util.hpp"
 
 int *keyword_info(TableRecord const &keywords, char const *keyword,
                   int *element_type, int *dimension) {
@@ -170,8 +170,11 @@ float get_keyword_float(Table *t, char *keyword) {
 double get_keyword_double(Table *t, char *keyword) {
   return getKeyword<Double>(t, keyword);
 }
-cmplx get_keyword_complex(Table *t, char *keyword) {
-  return getKeyword<Complex>(t, keyword);
+float _Complex get_keyword_complex(Table *t, char *keyword) {
+  return to_c_cmplx(getKeyword<Complex>(t, keyword));
+}
+double _Complex get_keyword_double_complex(Table *t, char *keyword) {
+  return to_c_double_cmplx(getKeyword<DComplex>(t, keyword));
 }
 char *get_keyword_string(Table *t, char *keyword) {
   String string = getKeyword<String>(t, keyword);
@@ -195,8 +198,12 @@ void put_keyword_float(Table *t, char *keyword, float input) {
 void put_keyword_double(Table *t, char *keyword, double input) {
   putKeyword(t, keyword, input);
 }
-void put_keyword_complex(Table *t, char *keyword, cmplx input) {
-  putKeyword(t, keyword, input);
+void put_keyword_complex(Table *t, char *keyword, float _Complex input) {
+  putKeyword(t, keyword, from_c_cmplx(input));
+}
+void put_keyword_double_complex(Table *t, char *keyword,
+                                double _Complex input) {
+  putKeyword(t, keyword, from_c_double_cmplx(input));
 }
 void put_keyword_string(Table *t, char *keyword, char *input) {
   putKeyword(t, keyword, input);
@@ -218,8 +225,13 @@ float *get_keyword_array_float(Table *t, char *keyword) {
 double *get_keyword_array_double(Table *t, char *keyword) {
   return getKeyword_array<Double, double>(t, keyword);
 }
-cmplx *get_keyword_array_complex(Table *t, char *keyword) {
-  return getKeyword_array<Complex, cmplx>(t, keyword);
+float _Complex *get_keyword_array_complex(Table *t, char *keyword) {
+  return to_c_cmplx_arr(
+      getKeyword_array<Complex, std::complex<float>>(t, keyword));
+}
+double _Complex *get_keyword_array_double_complex(Table *t, char *keyword) {
+  return to_c_double_cmplx_arr(
+      getKeyword_array<DComplex, std::complex<double>>(t, keyword));
 }
 char **get_keyword_array_string(Table *t, char *keyword) {
   return getKeyword_array<String, char *>(t, keyword);
@@ -241,9 +253,14 @@ void put_keyword_array_double(Table *t, char *keyword, double *input, int *dims,
                               int ndim) {
   putKeyword_array(t, keyword, input, dims, ndim);
 }
-void put_keyword_array_complex(Table *t, char *keyword, cmplx *input, int *dims,
-                               int ndim) {
-  putKeyword_array(t, keyword, input, dims, ndim);
+void put_keyword_array_complex(Table *t, char *keyword, float _Complex *input,
+                               int *dims, int ndim) {
+  putKeyword_array(t, keyword, from_c_cmplx_arr(input), dims, ndim);
+}
+void put_keyword_array_double_complex(Table *t, char *keyword,
+                                      double _Complex *input, int *dims,
+                                      int ndim) {
+  putKeyword_array(t, keyword, from_c_double_cmplx_arr(input), dims, ndim);
 }
 void put_keyword_array_string(Table *t, char *keyword, char **input, int *dims,
                               int ndim) {
@@ -264,8 +281,13 @@ float get_column_keyword_float(Table *t, char *column, char *keyword) {
 double get_column_keyword_double(Table *t, char *column, char *keyword) {
   return getKeyword<Double>(t, column, keyword);
 }
-cmplx get_column_keyword_complex(Table *t, char *column, char *keyword) {
-  return getKeyword<Complex>(t, column, keyword);
+float _Complex get_column_keyword_complex(Table *t, char *column,
+                                          char *keyword) {
+  return to_c_cmplx(getKeyword<Complex>(t, column, keyword));
+}
+double _Complex get_column_keyword_double_complex(Table *t, char *column,
+                                                  char *keyword) {
+  return to_c_double_cmplx(getKeyword<DComplex>(t, column, keyword));
 }
 char *get_column_keyword_string(Table *t, char *column, char *keyword) {
   String string = getKeyword<String>(t, column, keyword);
@@ -288,8 +310,12 @@ void put_column_keyword_double(Table *t, char *column, char *keyword,
   putKeyword<Double>(t, column, keyword, input);
 }
 void put_column_keyword_complex(Table *t, char *column, char *keyword,
-                                cmplx input) {
-  putKeyword<Complex>(t, column, keyword, input);
+                                float _Complex input) {
+  putKeyword<Complex>(t, column, keyword, from_c_cmplx(input));
+}
+void put_column_keyword_double_complex(Table *t, char *column, char *keyword,
+                                       double _Complex input) {
+  putKeyword<DComplex>(t, column, keyword, from_c_double_cmplx(input));
 }
 void put_column_keyword_string(Table *t, char *column, char *keyword,
                                char *input) {
@@ -308,8 +334,15 @@ float *get_column_keyword_array_float(Table *t, char *column, char *keyword) {
 double *get_column_keyword_array_double(Table *t, char *column, char *keyword) {
   return getKeyword_array<Double, double>(t, column, keyword);
 }
-cmplx *get_column_keyword_array_complex(Table *t, char *column, char *keyword) {
-  return getKeyword_array<Complex, cmplx>(t, column, keyword);
+float _Complex *get_column_keyword_array_complex(Table *t, char *column,
+                                                 char *keyword) {
+  return to_c_cmplx_arr(
+      getKeyword_array<Complex, std::complex<float>>(t, column, keyword));
+}
+double _Complex *get_column_keyword_array_double_complex(Table *t, char *column,
+                                                         char *keyword) {
+  return to_c_double_cmplx_arr(
+      getKeyword_array<DComplex, std::complex<double>>(t, column, keyword));
 }
 char **get_column_keyword_array_string(Table *t, char *column, char *keyword) {
   return getKeyword_array<String, char *>(t, column, keyword);
@@ -332,8 +365,16 @@ void put_column_keyword_array_double(Table *t, char *column, char *keyword,
   putKeyword_array(t, column, keyword, input, dims, ndim);
 }
 void put_column_keyword_array_complex(Table *t, char *column, char *keyword,
-                                      cmplx *input, int *dims, int ndim) {
-  putKeyword_array(t, column, keyword, input, dims, ndim);
+                                      float _Complex *input, int *dims,
+                                      int ndim) {
+  putKeyword_array(t, column, keyword, from_c_cmplx_arr(input), dims, ndim);
+}
+void put_column_keyword_array_double_complex(Table *t, char *column,
+                                             char *keyword,
+                                             double _Complex *input, int *dims,
+                                             int ndim) {
+  putKeyword_array(t, column, keyword, from_c_double_cmplx_arr(input), dims,
+                   ndim);
 }
 void put_column_keyword_array_string(Table *t, char *column, char *keyword,
                                      char **input, int *dims, int ndim) {

@@ -13,10 +13,6 @@ find_package(Casacore REQUIRED)
 # fPIC all the things
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# Turn on the errors Michael warned us about
-# We'd worry about  warning: 'get_cell_scalar_complex' has C-linkage specified, but returns user-defined type 'cmplx' (aka 'complex<float>') which is incompatible with C
-# But somehow it doesn't matter
-
 # Add subdirectories
 add_subdirectory(measurement_sets)
 add_subdirectory(measures)

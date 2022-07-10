@@ -24,8 +24,6 @@ using namespace std;
 #include <casacore/tables/Tables.h>
 using namespace casacore;
 
-typedef complex<float> cmplx;
-
 // Define a host of helpful methods that convert between casacore::Array and
 // standard C arrays. Strings need to be special cased here.
 //
@@ -74,5 +72,15 @@ unique_ptr<Array<String>> input_array(char *const *input, int const *dims,
                                       int ndim);
 
 extern "C" void free_string(char *string);
+
+// Complex Conversions
+float _Complex to_c_cmplx(std::complex<float> num);
+float _Complex *to_c_cmplx_arr(std::complex<float> *num);
+double _Complex to_c_double_cmplx(std::complex<double> num);
+double _Complex *to_c_double_cmplx_arr(std::complex<double> *num);
+std::complex<float> from_c_cmplx(float _Complex num);
+std::complex<float> *from_c_cmplx_arr(float _Complex *num);
+std::complex<double> from_c_double_cmplx(double _Complex num);
+std::complex<double> *from_c_double_cmplx_arr(double _Complex *num);
 
 #endif // JL_CASACORE_TABLES_UTIL_H

@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "util.h"
+#include "util.hpp"
 
 template <typename T> void addScalarColumn(Table *t, char const *name) {
   ScalarColumnDesc<T> column(name);
@@ -184,8 +184,11 @@ float *get_column_float(Table *t, char *name) {
 double *get_column_double(Table *t, char *name) {
   return getColumn<Double>(t, name);
 }
-cmplx *get_column_complex(Table *t, char *name) {
-  return getColumn<Complex>(t, name);
+float _Complex *get_column_complex(Table *t, char *name) {
+  return to_c_cmplx_arr(getColumn<Complex>(t, name));
+}
+double _Complex *get_column_double_complex(Table *t, char *name) {
+  return to_c_double_cmplx_arr(getColumn<DComplex>(t, name));
 }
 char **get_column_string(Table *t, char *name) {
   return getColumn<String, char *>(t, name);
@@ -205,9 +208,13 @@ void put_column_double(Table *t, char *name, double *input, int *dims,
                        int ndim) {
   putColumn(t, name, input, dims, ndim);
 }
-void put_column_complex(Table *t, char *name, cmplx *input, int *dims,
+void put_column_complex(Table *t, char *name, float _Complex *input, int *dims,
                         int ndim) {
-  putColumn(t, name, input, dims, ndim);
+  putColumn(t, name, from_c_cmplx_arr(input), dims, ndim);
+}
+void put_column_double_complex(Table *t, char *name, double _Complex *input,
+                               int *dims, int ndim) {
+  putColumn(t, name, from_c_double_cmplx_arr(input), dims, ndim);
 }
 void put_column_string(Table *t, char *name, char **input, int *dims,
                        int ndim) {
