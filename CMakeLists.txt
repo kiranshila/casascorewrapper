@@ -21,6 +21,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_subdirectory(measurement_sets)
 add_subdirectory(measures)
 add_subdirectory(tables)
+add_subdirectory(rc)
 
 # Add our library
 add_library(casacorewrapper SHARED
