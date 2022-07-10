@@ -76,28 +76,28 @@ unique_ptr<Array<String>> input_array(char *const *input, int const *dims,
 
 extern "C" void free_string(char *string) { delete[] string; }
 
-// Complex Conversions
+// Complex Conversions - this seems cursed
 float _Complex to_c_cmplx(std::complex<float> num) {
-  return *(reinterpret_cast<float(&)[2]>(num));
+  return *((float _Complex *)(&num));
 }
 float _Complex *to_c_cmplx_arr(std::complex<float> *num) {
-  return reinterpret_cast<float _Complex *>(num);
+  return (float _Complex *)(num);
 }
 double _Complex to_c_double_cmplx(std::complex<double> num) {
-  return *(reinterpret_cast<double(&)[2]>(num));
+  return *((double _Complex *)(&num));
 }
 double _Complex *to_c_double_cmplx_arr(std::complex<double> *num) {
-  return reinterpret_cast<double _Complex *>(num);
+  return (double _Complex *)(num);
 }
 std::complex<float> from_c_cmplx(float _Complex num) {
   return std::complex<float>(num);
 }
 std::complex<float> *from_c_cmplx_arr(float _Complex *num) {
-  return reinterpret_cast<std::complex<float> *>(num);
+  return (std::complex<float> *)(num);
 }
 std::complex<double> from_c_double_cmplx(double _Complex num) {
   return std::complex<double>(num);
 }
 std::complex<double> *from_c_double_cmplx_arr(double _Complex *num) {
-  return reinterpret_cast<std::complex<double> *>(num);
+  return (std::complex<double> *)(num);
 }
